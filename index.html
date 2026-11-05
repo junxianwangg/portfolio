@@ -96,6 +96,52 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   text-transform:uppercase;color:var(--muted);transition:color .2s}
 .work-item:hover .work-cap .go{color:var(--ink)}
 
+/* ---------- photographs: split landing ---------- */
+.gate{display:grid;grid-template-columns:1fr 1fr;gap:clamp(12px,1.6vw,22px);
+  padding:clamp(10px,2vw,28px) var(--gut) clamp(40px,6vw,80px);max-width:1600px}
+.gate-panel{
+  position:relative;display:block;overflow:hidden;background:#eeeeea;
+  aspect-ratio:4/5;isolation:isolate;
+}
+.gate-panel .slide{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  opacity:0;transition:opacity .9s ease,transform 1.6s cubic-bezier(.2,.7,.2,1);
+}
+/* only the active slide of a hovered panel is visible */
+.gate-panel:hover .slide.on,.gate-panel:focus-visible .slide.on{opacity:1}
+.gate-panel:hover .slide.on{transform:scale(1.03)}
+.gate-scrim{position:absolute;inset:0;z-index:1;background:rgba(20,20,19,0);transition:background .7s ease}
+.gate-panel:hover .gate-scrim,.gate-panel:focus-visible .gate-scrim{background:rgba(20,20,19,.3)}
+.gate-body{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;padding:24px;
+  transition:color .5s ease}
+.gate-body h2{
+  font-family:var(--serif);font-weight:300;font-size:clamp(30px,5vw,68px);
+  line-height:1;margin:0;letter-spacing:-.015em;transition:color .5s ease;
+}
+.gate-body .go{margin-top:20px;opacity:0;transform:translateY(6px);
+  transition:opacity .5s ease,transform .5s ease}
+.gate-panel:hover .gate-body h2,.gate-panel:focus-visible .gate-body h2,
+.gate-panel:hover .gate-body .go,.gate-panel:focus-visible .gate-body .go{color:#fff}
+.gate-panel:hover .gate-body .go,.gate-panel:focus-visible .gate-body .go{opacity:1;transform:none}
+.gate-panel .ph{position:absolute;inset:0;aspect-ratio:auto;opacity:1}
+
+/* ---------- singles ---------- */
+.singles{padding:clamp(24px,5vw,56px) var(--gut) 20px;max-width:1240px;margin:0 auto}
+.singles figure{margin:0 0 clamp(34px,6vw,86px);cursor:zoom-in}
+.singles img{width:100%;background:#eeeeea;transition:opacity .35s}
+.singles figure:hover img{opacity:.88}
+
+/* ---------- video ---------- */
+.vids{padding:clamp(24px,5vw,56px) var(--gut) 20px;max-width:1240px;margin:0 auto}
+.vid-item{margin-bottom:clamp(40px,7vw,100px)}
+.vids .vid{padding:0;max-width:none}
+.vid-item h2{font-family:var(--serif);font-weight:300;font-size:clamp(24px,3vw,38px);
+  line-height:1.08;margin:18px 0 8px;letter-spacing:-.01em}
+.vid-item .meta{display:block;margin-bottom:12px}
+.vid-item p{font-family:var(--serif);font-size:16px;line-height:1.55;color:#57574f;
+  max-width:52ch;margin:0}
+
 /* ---------- project page ---------- */
 .proj-head{padding:clamp(30px,7vw,80px) var(--gut) clamp(30px,5vw,60px);max-width:1500px}
 .proj-head h1{
@@ -108,6 +154,12 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   color:var(--muted);margin:-8px 0 20px;
 }
 .proj-head .meta{margin:0 0 26px}
+
+/* video embed — fixed 16:9 frame so the page never jumps while it loads */
+.vid{padding:0 var(--gut) clamp(30px,5vw,64px);max-width:1500px}
+.vid-frame{position:relative;aspect-ratio:16/9;background:#e8e8e3;overflow:hidden}
+.vid-frame iframe,.vid-frame video{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+.vid .cap{margin-top:9px}
 .proj-head p.lede{
   font-family:var(--serif);font-size:clamp(17px,1.5vw,21px);line-height:1.55;
   max-width:46ch;margin:0;color:#3a3a37;
@@ -187,6 +239,12 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   }
   .nav-links.open{display:flex}
   .nav-links a,.nav-links button{font-size:13px}
+  .gate{grid-template-columns:1fr;gap:14px}
+  .gate-panel{aspect-ratio:3/2}
+  .gate-panel .slide.on{opacity:1}
+  .gate-scrim{background:rgba(20,20,19,.32)}
+  .gate-body h2{color:#fff}
+  .gate-body .go{opacity:1;transform:none;color:#fff}
   .work-item{grid-template-columns:1fr;gap:14px}
   .work-item:nth-child(even) .work-figure{grid-column:1;grid-row:1}
   .work-item:nth-child(even) .work-cap{grid-column:1;grid-row:2;text-align:left}
@@ -210,18 +268,18 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 <a class="skip" href="#main">Skip to content</a>
 
 <header class="nav">
-  <a class="nav-name" href="#/project" id="navName"></a>
+  <a class="nav-name" href="#/photographs" id="navName"></a>
 
   <button class="nav-burger" id="burger" type="button" aria-label="Menu" aria-expanded="false">
     <span></span><span></span>
   </button>
 
   <nav class="nav-links" id="navLinks">
-    <a href="#/project" data-nav="project"></a>
+    <a href="#/photographs" data-nav="photographs"></a>
     <a href="#/journalism" data-nav="journalism"></a>
+    <a href="#/video" data-nav="video"></a>
     <a href="#/about" data-nav="about"></a>
     <a href="#/contact" data-nav="contact"></a>
-    <a id="navIg" target="_blank" rel="noopener">Instagram</a>
   </nav>
 </header>
 
@@ -376,6 +434,17 @@ const JOURNALISM = [
     cover: "cal-01.jpg",
     note:  "Cal 49, Wagner 7.",
     text:  "Cal 49, Wagner 7.",
+
+    // 视频（可选）—— 把下面这段前的 // 删掉就生效。四种只填一种。
+    // 这个字段可以加在任何一个项目里，视频显示在照片上方。
+    // video: {
+    //   bilibili: "BV1xx411c7mD",     // 网址里 BV 开头那串
+    //   youtube:  "dQw4w9WgXcQ",      // 网址里 v= 后面那串
+    //   vimeo:    "123456789",        // 网址最后那串数字
+    //   file:     "clip.mp4",         // 放在 images/ 里的视频文件
+    //   poster:   "cal-01.jpg",       // 只对 file 有用：未播放时的封面图
+    //   caption:  "Halftime, Memorial Stadium"
+    // },
     photos: [
       "cal-01.jpg",
       "cal-02.jpg",
@@ -387,21 +456,65 @@ const JOURNALISM = [
   },
 
   {
-    id: "silent-disco",
-    title: "Silent Disco",
-    place: "Rochester, NY",
-    year:  "February 1, 2025",
-    cover: "disco-01.jpg",
-    note:  "",
-    text:  "",
+    id: "rtm-watch-party",
+    title: "Regional Transit Measure Watch Party",
+    place: "Place",                          // ← 改成实际地点
+    year:  "November 3, 2026",               // ← 对不对？不对就改
+    cover: "rtm-01.jpg",
+    note:  "",                               // ← 首页侧栏那一句，短
+    text:  "",                               // ← 内页开头那段，两三句
     photos: [
-      "disco-01.jpg",
-      "disco-02.jpg",
-      "disco-03.jpg",
-      "disco-04.jpg",
-      "disco-05.jpg",
-      "disco-06.jpg"
+      "rtm-01.jpg",
+      "rtm-02.jpg",
+      "rtm-03.jpg",
+      "rtm-04.jpg",
+      "rtm-05.jpg",
+      "rtm-06.jpg",
+      "rtm-07.jpg",
+      "rtm-08.jpg"
     ]
+  }
+
+];
+
+/* ============================================================
+   SINGLES — 单张照片，不属于任何项目
+   只写文件名就行；想配说明就用 { file, caption } 这种写法
+   ============================================================ */
+
+const SINGLES = [
+  "single-01.jpg",
+  "single-02.jpg",
+  { file: "single-03.jpg", caption: "Caption goes here" },   // 配说明是可选的
+  "single-04.jpg",
+  "single-05.jpg",
+  "single-06.jpg",
+  "single-07.jpg",
+  "single-08.jpg",
+  "single-09.jpg"
+];
+
+/* ============================================================
+   VIDEO — 每一块 { } 是一个视频。复制一整块就是新增一个。
+   vimeo 填网址最后那串数字：vimeo.com/123456789 → "123456789"
+   ============================================================ */
+
+const VIDEOS = [
+
+  {
+    vimeo: "123456789",                      // ← 改成你的 Vimeo 编号
+    title: "First Video Title",
+    place: "Berkeley, CA",
+    year:  "2026",
+    text:  "One or two sentences about this piece."
+  },
+
+  {
+    vimeo: "987654321",
+    title: "Second Video Title",
+    place: "Place",
+    year:  "2026",
+    text:  "One or two sentences about this piece."
   }
 
 ];
@@ -416,12 +529,15 @@ const JOURNALISM = [
 
   var IMG = "images/";
   var UI = {
-    project: "Project", journalism: "Journalism", about: "About", contact: "Contact"
+    photographs: "Photographs",      /* ← 换成 "Stills" 或 "Work" 只要改这一个词 */
+    journalism:  "Journalism",
+    video:       "Video",
+    about:       "About",
+    contact:     "Contact"
   };
 
   var main    = document.getElementById("main");
   var navName = document.getElementById("navName");
-  var navIg   = document.getElementById("navIg");
   var footTxt = document.getElementById("footText");
   var links   = document.getElementById("navLinks");
   var burger  = document.getElementById("burger");
@@ -465,8 +581,7 @@ const JOURNALISM = [
   function chrome() {
     navName.textContent = SITE.name;
     footTxt.textContent = SITE.footer;
-    navIg.href = SITE.instagram;
-    ["project", "journalism", "about", "contact"].forEach(function (k) {
+    ["photographs", "journalism", "video", "about", "contact"].forEach(function (k) {
       document.querySelector('[data-nav="' + k + '"]').textContent = UI[k];
     });
   }
@@ -481,7 +596,8 @@ const JOURNALISM = [
     journalism: { one: "story",   many: "stories"  }
   };
 
-  function findStory(id) {                 /* the lightbox needs either list */
+  function findStory(id) {                 /* the lightbox needs any of the lists */
+    if (id === "__singles") return { photos: SINGLES };
     for (var k in COLS) {
       var hit = COLS[k].filter(function (s) { return s.id === id; })[0];
       if (hit) return hit;
@@ -495,6 +611,70 @@ const JOURNALISM = [
     return '<img class="' + cls + '" src="' + IMG + esc(file) + '" alt="' + esc(alt) + '" ' +
            (first ? '' : 'loading="lazy" ') +
            'data-file="' + esc(file) + '" onerror="imgFail(this)">';
+  }
+
+  /* ---------- photographs: the split landing ---------- */
+  function gatePanel(href, label, files) {
+    files = files.slice(0, MAX_SLIDES);
+    var slides = files.map(function (f, i) { return slide(f, label, i === 0); }).join("");
+    return '<a class="gate-panel" href="' + href + '">' +
+             slides +
+             '<span class="gate-scrim"></span>' +
+             '<span class="gate-body">' +
+               '<h2>' + esc(label) + '</h2>' +
+               '<span class="go meta">Enter \u2192</span>' +
+             '</span>' +
+           '</a>';
+  }
+
+  function pageGate() {
+    /* one cover from each project, so the panel previews the whole section */
+    var projFiles = SERIES.map(function (p) {
+      return p.cover || (p.photos[0] && norm(p.photos[0]).file);
+    }).filter(Boolean);
+    var singleFiles = SINGLES.map(norm).map(function (p) { return p.file; });
+
+    return '<div class="gate">' +
+      gatePanel('#/project', 'Projects', projFiles) +
+      gatePanel('#/singles', 'Singles',  singleFiles) +
+    '</div>';
+  }
+
+  /* ---------- singles ---------- */
+  function pageSingles() {
+    var photos = SINGLES.map(norm);
+    return '<article data-project="__singles">' +
+      '<header class="proj-head">' +
+        '<h1>Singles</h1>' +
+        '<p class="meta">' + photos.length + ' photographs</p>' +
+      '</header>' +
+      '<div class="singles rows">' +
+        photos.map(function (ph, i) {
+          return '<figure data-i="' + i + '">' + pic(ph.file, "Single") +
+                 (ph.caption ? '<figcaption class="cap">' + esc(ph.caption) + '</figcaption>' : "") +
+                 '</figure>';
+        }).join("") +
+      '</div>' +
+      '<div class="proj-foot">' +
+        '<a class="meta" href="#/photographs">\u2190 Photographs</a>' +
+        '<a class="meta" href="#/project">All projects \u2192</a>' +
+      '</div>' +
+    '</article>';
+  }
+
+  /* ---------- video ---------- */
+  function pageVideo() {
+    if (!VIDEOS.length) return '<div class="vids"><p class="meta">Nothing here yet.</p></div>';
+    return '<div class="vids">' + VIDEOS.map(function (v) {
+      return '<div class="vid-item">' +
+        videoBlock({ vimeo: v.vimeo, youtube: v.youtube, bilibili: v.bilibili,
+                     file: v.file, poster: v.poster }) +
+        '<h2>' + esc(v.title || "") + '</h2>' +
+        '<span class="meta">' + esc(v.place || "") +
+          (v.place && v.year ? ' &nbsp;\u00b7&nbsp; ' : '') + esc(v.year || "") + '</span>' +
+        (v.text ? '<p>' + esc(v.text) + '</p>' : "") +
+      '</div>';
+    }).join("") + '</div>';
   }
 
   function pageWork(base) {
@@ -535,7 +715,7 @@ const JOURNALISM = [
     stopCarousels();
     if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    Array.prototype.forEach.call(document.querySelectorAll(".work-figure"), function (fig, n) {
+    Array.prototype.forEach.call(document.querySelectorAll(".work-figure, .gate-panel"), function (fig, n) {
       if (fig.querySelectorAll(".slide").length < 2) return;
       var i = 0;
       /* stagger so the three covers never flip in unison */
@@ -563,6 +743,47 @@ const JOURNALISM = [
     { n: 2, c: "r-pair2" },
     { n: 1, c: "r-wide" }
   ];
+
+  /* One video per project. Fill in exactly ONE of bilibili / youtube / vimeo / file.
+     bilibili: the BV id from the URL — bilibili.com/video/BV1xx411c7mD → "BV1xx411c7mD"
+     youtube:  the id after v= — youtube.com/watch?v=dQw4w9WgXcQ → "dQw4w9WgXcQ"
+     vimeo:    the number — vimeo.com/123456789 → "123456789"
+     file:     a video file sitting in images/ — "clip.mp4" */
+  function videoBlock(v) {
+    if (!v) return "";
+    var inner = "";
+
+    if (v.bilibili) {
+      /* danmaku=0 hides the scrolling comments; as_wide=1 fills the frame */
+      inner = '<iframe src="https://player.bilibili.com/player.html?bvid=' + esc(v.bilibili) +
+              '&page=1&high_quality=1&danmaku=0&as_wide=1&autoplay=0" ' +
+              'scrolling="no" frameborder="0" allowfullscreen ' +
+              'title="' + esc(v.caption || "Video") + '"></iframe>';
+
+    } else if (v.youtube) {
+      inner = '<iframe src="https://www.youtube-nocookie.com/embed/' + esc(v.youtube) + '?rel=0" ' +
+              'frameborder="0" loading="lazy" allowfullscreen ' +
+              'allow="accelerometer; encrypted-media; picture-in-picture" ' +
+              'title="' + esc(v.caption || "Video") + '"></iframe>';
+
+    } else if (v.vimeo) {
+      inner = '<iframe src="https://player.vimeo.com/video/' + esc(v.vimeo) + '?dnt=1" ' +
+              'frameborder="0" loading="lazy" allowfullscreen ' +
+              'allow="fullscreen; picture-in-picture" ' +
+              'title="' + esc(v.caption || "Video") + '"></iframe>';
+
+    } else if (v.file) {
+      inner = '<video controls playsinline preload="metadata"' +
+              (v.poster ? ' poster="' + IMG + esc(v.poster) + '"' : '') + '>' +
+              '<source src="' + IMG + esc(v.file) + '">' +
+              '</video>';
+    } else {
+      return "";
+    }
+
+    return '<div class="vid"><div class="vid-frame">' + inner + '</div>' +
+           (v.caption ? '<p class="cap">' + esc(v.caption) + '</p>' : "") + '</div>';
+  }
 
   function pageProject(base, id) {
     var list = COLS[base];
@@ -593,6 +814,7 @@ const JOURNALISM = [
           ' &nbsp;·&nbsp; ' + photos.length + ' photographs' + '</p>' +
         (s.text ? '<p class="lede">' + esc(s.text) + '</p>' : "") +
       '</header>' +
+      videoBlock(s.video) +
       '<div class="rows">' + rows + '</div>' +
       '<div class="proj-foot">' +
         '<a class="meta" href="#/' + base + '">← All ' + WORD[base].many + '</a>' +
@@ -628,23 +850,27 @@ const JOURNALISM = [
   function route() {
     var h = location.hash.replace(/^#\/?/, "");
     var parts = h.split("/").filter(Boolean);
-    var page = parts[0] || "project";
-    if (page === "work") page = "project";          /* old links keep working */
+    var page = parts[0] || "photographs";
+    if (page === "work") page = "photographs";      /* old links keep working */
 
     stopCarousels();
-    if (page === "about")        main.innerHTML = pageAbout();
+    if (page === "photographs")  main.innerHTML = pageGate();
+    else if (page === "singles") main.innerHTML = pageSingles();
+    else if (page === "video")   main.innerHTML = pageVideo();
+    else if (page === "about")   main.innerHTML = pageAbout();
     else if (page === "contact") main.innerHTML = pageContact();
     else if (COLS[page] && parts[1]) main.innerHTML = pageProject(page, parts[1]);
-    else {
-      if (!COLS[page]) page = "project";
-      main.innerHTML = pageWork(page);
-    }
+    else if (COLS[page])         main.innerHTML = pageWork(page);
+    else { page = "photographs"; main.innerHTML = pageGate(); }
 
-    ["project", "journalism", "about", "contact"].forEach(function (k) {
+    /* which nav item lights up: project + singles both live under Photographs */
+    var navKey = (page === "project" || page === "singles") ? "photographs" : page;
+
+    ["photographs", "journalism", "video", "about", "contact"].forEach(function (k) {
       var a = document.querySelector('[data-nav="' + k + '"]');
-      if (k === page) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+      if (k === navKey) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
     });
-    if (COLS[page] && !parts[1]) startCarousels();
+    if (page === "photographs" || (COLS[page] && !parts[1])) startCarousels();
     links.classList.remove("open");
     burger.setAttribute("aria-expanded", "false");
     window.scrollTo(0, 0);

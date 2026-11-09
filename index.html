@@ -163,6 +163,9 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .vid-frame{position:relative;aspect-ratio:16/9;background:#e8e8e3;overflow:hidden}
 .vid-frame iframe,.vid-frame video{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
 .vid .cap{margin-top:9px}
+.lede a{color:inherit;text-decoration:underline;text-underline-offset:3px;
+  text-decoration-thickness:1px;text-decoration-color:var(--muted);transition:text-decoration-color .2s}
+.lede a:hover{text-decoration-color:var(--ink)}
 .proj-head p.lede{
   font-family:var(--serif);font-size:clamp(17px,1.5vw,21px);line-height:1.55;
   max-width:46ch;margin:0;color:#3a3a37;
@@ -363,15 +366,14 @@ const SERIES = [
     note:  "An ongoing documentary across Cuba, Egypt and Mexico.",
     text:  "The Lingering Odyssey is a documentary project across Cuba, Egypt and Mexico, made between 2024 and 2025. It is still ongoing, and will extend to more places in the world, particularly in Latin America and Africa.",
     photos: [
-      "odyssey-01.jpg",
-      "odyssey-02.jpg",
-      "odyssey-03.jpg",
-      "odyssey-04.jpg",
-      "odyssey-05.jpg",
-      "odyssey-06.jpg",
-      "odyssey-07.jpg",
-      "odyssey-08.jpg"
-      // 不够就继续加行（记得上一行末尾补逗号），多了就删行
+      { file: "odyssey-01.jpg", caption: "Havana, Cuba" },
+      { file: "odyssey-02.jpg", caption: "Havana, Cuba" },
+      { file: "odyssey-03.jpg", caption: "Cairo, Egypt" },
+      { file: "odyssey-04.jpg", caption: "Havana, Cuba" },
+      { file: "odyssey-05.jpg", caption: "Havana, Cuba" },
+      { file: "odyssey-06.jpg", caption: "Cairo, Egypt" },
+      { file: "odyssey-07.jpg", caption: "Luxor, Egypt" },
+      { file: "odyssey-08.jpg", caption: "Mexico City, Mexico" }
     ]
   },
 
@@ -411,16 +413,16 @@ const JOURNALISM = [
     place: "San Francisco, CA",
     year:  "November 3, 2026",               // ← 对不对？不对就改
     cover: "rtm-01.jpg",
-    note:  "",                               // ← 首页侧栏那一句，短
-    text:  "",                               // ← 内页开头那段，两三句
+    note:  "Transit workers and advocates watch the returns on election night.",
+    text:  "Public transit workers and advocates gathered at The Cordial in San Francisco to eat, drink and watch the results of the Regional Transit Measure (RTM) and the national midterm elections. The watch party was hosted by the urban policy group SPUR. RTM is a half-cent sales tax for 14 years in Alameda, Contra Costa, San Mateo and Santa Clara counties and a one-cent tax in San Francisco. The Connect Bay Area tax would generate about $980 million annually. [Read more.](https://emeryvilletoday.com/2026/11/06/bay-area-transit-agencies-celebrate-rtms-passage-with-toasts-cheers-sighs-of-relief/)",
     photos: [
-      "rtm-01.jpg",
-      "rtm-02.jpg",
-      "rtm-03.jpg",
-      "rtm-04.jpg",
-      "rtm-05.jpg",
-      "rtm-06.jpg",
-      "rtm-07.jpg"
+      { file: "rtm-01.jpg", caption: "SPUR’s transportation policy director, Laura Tolkoff, gives the winning speech at the party." },
+      { file: "rtm-02.jpg", caption: "Dane Willette, a field organizer for the Connect Bay Area campaign, wears all kinds of badges and stickers related to the midterm election." },
+      { file: "rtm-03.jpg", caption: "RTM supporters at the victory party with their campaign shirts." },
+      { file: "rtm-04.jpg", caption: "Alfred Twu, an active supporter and advocate for the RTM, attended the party with a pro-RTM sign." },
+      { file: "rtm-05.jpg", caption: "Rebecca Saltzman, former director of BART, talks to Alfred Twu." },
+      { file: "rtm-06.jpg", caption: "RTM supporters celebrate the election results." },
+      { file: "rtm-07.jpg", caption: "Laura Tolkoff, SPUR transportation policy director, raises a glass in the middle of the group. Bearded and standing behind her is Jeff Cretan, Connect Bay Area spokesperson." }
     ]
   },
 
@@ -481,15 +483,15 @@ const JOURNALISM = [
    ============================================================ */
 
 const SINGLES = [
-  "single-01.jpg",
-  "single-02.jpg",
-  { file: "single-03.jpg", caption: "Caption goes here" },   // 配说明是可选的
-  "single-04.jpg",
-  "single-05.jpg",
-  "single-06.jpg",
-  "single-07.jpg",
-  "single-08.jpg",
-  "single-09.jpg"
+  { file: "single-01.jpg", caption: "San Francisco, USA, 2026" },
+  { file: "single-02.jpg", caption: "San Francisco, USA, 2026" },
+  { file: "single-03.jpg", caption: "Sydney, Australia, 2025" },
+  { file: "single-04.jpg", caption: "Hong Kong, SAR, China, 2026" },
+  { file: "single-05.jpg", caption: "Beijing, China, 2026" },
+  { file: "single-06.jpg", caption: "Chengdu, China, 2025" },
+  { file: "single-07.jpg", caption: "Melbourne, Australia, 2025" },
+  { file: "single-08.jpg", caption: "Sydney, Australia, 2025" },
+  { file: "single-09.jpg", caption: "New York, USA, 2026" }
 ];
 
 /* ============================================================
@@ -539,6 +541,15 @@ const VIDEOS = [
     });
   }
   function norm(p) { return typeof p === "string" ? { file: p, caption: "" } : p; }
+
+  /* Escape first, then turn [label](https://…) into a link — so the text
+     stays plain data and only this one pattern ever becomes markup. */
+  function rich(t) {
+    return esc(t || "").replace(
+      /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,
+      '<a href="$2" target="_blank" rel="noopener">$1</a>'
+    );
+  }
 
   /* an <img> that degrades to a labelled placeholder if the file isn't there yet */
   /* A missing image is nearly always the wrong extension or the wrong case:
@@ -806,7 +817,7 @@ const VIDEOS = [
         (s.subtitle ? '<p class="sub">' + esc(s.subtitle) + '</p>' : "") +
         '<p class="meta">' + esc(s.place) + ' &nbsp;·&nbsp; ' + esc(s.year || "") +
           ' &nbsp;·&nbsp; ' + photos.length + ' photographs' + '</p>' +
-        (s.text ? '<p class="lede">' + esc(s.text) + '</p>' : "") +
+        (s.text ? '<p class="lede">' + rich(s.text) + '</p>' : "") +
       '</header>' +
       videoBlock(s.video) +
       '<div class="rows">' + rows + '</div>' +
